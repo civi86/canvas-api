@@ -1,5 +1,5 @@
-const canvas = document.querySelector('canvas');
-const c = canvas.getContext('2d');
+import {functionality} from './functionality.js';
+functionality();
 
-canvas.width = innerWidth;
-canvas.hight = innerHeight;
+//import {map} from './map.js';
+//map();
