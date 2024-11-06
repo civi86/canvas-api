@@ -8,7 +8,7 @@ export function functionality(){
         constructor({position, velocity}) {
             this.position = position;
             this.velocity = velocity;
-            this.radius = 30;
+            this.radius = 15;
             this.radians = 0.75;
             this.openRate = 0.02;
             this.orientation = 0;
@@ -57,7 +57,7 @@ export function functionality(){
         constructor({position, velocity}) {
             this.position = position;
             this.velocity = velocity;
-            this.radius = 30;
+            this.radius = 15;
             this.orientation = 0;
         }
 
@@ -139,7 +139,7 @@ export function functionality(){
     }, 1000);
     
     function animate() {
-        c.clearRect(0, 0, canvas.width, canvas.height);
+        //c.clearRect(0, 0, canvas.width, canvas.height);
 
         if (player.velocity.x > 0) player.orientation = 0
         else if (player.velocity.y < 0) player.orientation = 2
