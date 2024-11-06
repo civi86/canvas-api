@@ -1,9 +1,5 @@
 const canvas = document.querySelector('canvas');
 
-<<<<<<< Updated upstream
-//import {map} from './map.js';
-//map();
-=======
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
@@ -17,4 +13,3 @@ window.addEventListener('load', () => {
     map();
     functionality();
 });
->>>>>>> Stashed changes
