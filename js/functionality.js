@@ -1,21 +1,6 @@
 import { c } from './main.js'
 
 export function functionality(){
-<<<<<<< Updated upstream
-    const canvas = document.querySelector('canvas');
-    const c = canvas.getContext('2d');
-
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
-    
-    class Player {
-        constructor({position, velocity}) {
-            this.position = position
-            this.velocity = velocity
-            this.radius = 20
-            this.radians = 0.75
-            this.openRate = 0.02
-=======
     
     class Player {
         constructor({position, velocity}) {
@@ -25,19 +10,9 @@ export function functionality(){
             this.radians = 0.75;
             this.openRate = 0.02;
             this.orientation = 0;
->>>>>>> Stashed changes
         }
 
         draw() {
-<<<<<<< Updated upstream
-            c.beginPath()
-            c.arc(this.position.x, this.position.y, this.radius, this.radians,
-                Math.PI * 2 - this.radians)
-            c.lineTo(this.position.x, this.position.y)
-            c.fillStyle = 'yellow'
-            c.fill()
-            c.closePath()
-=======
             let startAngle, endAngle;
 
             switch (this.orientation) {
@@ -64,7 +39,6 @@ export function functionality(){
             c.fillStyle = 'white';
             c.fill();
             c.closePath();
->>>>>>> Stashed changes
         }
 
         update() {
@@ -107,13 +81,8 @@ export function functionality(){
 
     })
     function animate() {
-<<<<<<< Updated upstream
-        c.clearRect(0, 0, canvas.width, canvas.height);
-        requestAnimationFrame(animate)
-=======
         c.clearRect(player.position.x-30, player.position.y-30, 60, 60);
         requestAnimationFrame(animate);
->>>>>>> Stashed changes
         player.update();
 
         if (player.velocity.x > 0) player.orientation = 0
@@ -126,22 +95,6 @@ export function functionality(){
     addEventListener('keydown', ({key}) => {
         switch (key) {
             case 'w':
-<<<<<<< Updated upstream
-                player.velocity.y = -1
-                player.velocity.x = 0
-                break
-            case 'a':
-                player.velocity.x = -1
-                player.velocity.y = 0
-                break
-            case 's':
-                player.velocity.y = 1
-                player.velocity.x = 0
-                break
-            case 'd':
-                player.velocity.x = 1
-                player.velocity.y = 0
-=======
                 player.velocity.y = -1;
                 player.velocity.x = 0;
                 break
@@ -156,7 +109,6 @@ export function functionality(){
             case 'd':
                 player.velocity.x = 1;
                 player.velocity.y = 0;
->>>>>>> Stashed changes
                 break
         }
     })
