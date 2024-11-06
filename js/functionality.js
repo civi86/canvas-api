@@ -1,7 +1,5 @@
 import { c } from './main.js'
 
-import { canvas } from './main.js'
-
 export function functionality(){
     
     class Player {
