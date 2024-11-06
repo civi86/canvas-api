@@ -127,6 +127,17 @@ export function functionality(){
 
     })
 
+    setInterval(function() {
+        if (ghost.velocity.y = 1) {
+            ghost.velocity.y - 2;
+        }
+    }, 500);
+    setInterval(function() {
+        if (ghost.velocity.y = -1) {
+            ghost.velocity.y + 2;
+        }
+    }, 1000);
+    
     function animate() {
         c.clearRect(0, 0, canvas.width, canvas.height);
 
