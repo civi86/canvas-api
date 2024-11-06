@@ -1,5 +1,7 @@
 import { c } from './main.js'
 
+import { canvas } from './main.js'
+
 export function functionality(){
     
     class Player {
@@ -36,7 +38,7 @@ export function functionality(){
             c.beginPath();
             c.arc(this.position.x, this.position.y, this.radius, startAngle, endAngle);
             c.lineTo(this.position.x, this.position.y);
-            c.fillStyle = 'white';
+            c.fillStyle = 'yellow';
             c.fill();
             c.closePath();
         }
@@ -48,6 +50,38 @@ export function functionality(){
 
             if (this.radians < 0 || this.radians > .75) this.openRate = -this.openRate
             this.radians += this.openRate
+        }
+    }
+
+    class Ghost {
+        constructor({position, velocity}) {
+            this.position = position;
+            this.velocity = velocity;
+            this.radius = 30;
+            this.orientation = 0;
+        }
+
+        draw() {
+            switch (this.orientation) {
+                case 0:
+    
+                    break;
+                case 1:
+
+                    break
+                    
+            }
+            c.beginPath();
+            c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+            c.fillStyle = 'green';
+            c.fill();
+            c.closePath();
+        }
+
+        update() {
+            this.draw()
+            this.position.x += this.velocity.x
+            this.position.y += this.velocity.y
         }
     }
 
@@ -80,15 +114,30 @@ export function functionality(){
         }
 
     })
+
+    const ghost = new Ghost({
+        position: {
+            x:600,
+            y:600
+        },
+        velocity: {
+            x:0,
+            y:0
+        }
+
+    })
+
     function animate() {
-        c.clearRect(player.position.x-30, player.position.y-30, 60, 60);
-        requestAnimationFrame(animate);
-        player.update();
+        c.clearRect(0, 0, canvas.width, canvas.height);
 
         if (player.velocity.x > 0) player.orientation = 0
         else if (player.velocity.y < 0) player.orientation = 2
         else if (player.velocity.x < 0) player.orientation = 1
         else if (player.velocity.y > 0) player.orientation = 3
+
+        player.update();
+        ghost.update()
+        requestAnimationFrame(animate);
     }
     animate()
 
