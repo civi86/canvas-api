@@ -2,3 +2,18 @@ body {
     margin: 0;
     background-color: black;
 }
+
+#score {
+    display: block;
+    position: relative;
+    margin-left: 340px;
+    margin-top: 10%;
+    color: red;
+    font-size: 40px;
+    font-family:fantasy;
+}
+
+#canvas {
+    margin-top: -20%;
+    margin-left: 10%;
+}
