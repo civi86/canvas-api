@@ -12,18 +12,18 @@ function functionality(){
 
     const map = [
         ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-        ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-        ['-', ' ', '-', '-', '-', ' ', '-', '-', '-', ' ', '-', ' ', '-', '-', '-', ' ', '-'],
+        ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+        ['-', ' ', '-', '-', '-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', ' ', '-'],
         ['-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', '-'],
         ['-', ' ', ' ', ' ', '-', ' ', '-', '-', '-', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
-        ['-', ' ', '-', ' ', '-', ' ', '-', '-', '-', ' ', '-', '-', '-', ' ', '-', ' ', '-'],
-        ['-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
+        ['-', '-', '-', ' ', '-', ' ', '-', '-', '-', ' ', '-', '-', '-', ' ', ' ', ' ', '-'],
+        ['-', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', '-', '-', '-'],
         ['-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', '-', ' ', '-', ' ', '-', ' ', '-'],
         ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
         ['-', ' ', ' ', ' ', '-', ' ', '-', '-', ' ', '-', ' ', '-', '-', ' ', '-', ' ', '-'],
         ['-', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
         ['-', ' ', '-', '-', '-', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', ' ', '-'],
-        ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+        ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
         ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
     ];
 
@@ -102,7 +102,8 @@ function functionality(){
         constructor({position, velocity}) {
             this.position = position;
             this.velocity = velocity;
-            this.radius = 15;
+            this.radius = 19;
+            this.cooldown = 1;
         }
 
         draw() {
@@ -151,10 +152,21 @@ function functionality(){
         velocity: { x:0, y:1 }
     });
 
-    setInterval(() => {
-        ghost.velocity.y *= -1;
-    }, 1000);
+    const ghost2 = new Ghost({
+        position: { x:820, y:800 },
+        velocity: { x:0, y:1 }
+    });
+    const ghost3 = new Ghost({
+        position: { x:940, y:620 },
+        velocity: { x:1, y:0 }
+    });
 
+    function randomizeGhostDirection(ghost) {
+        if (Math.random() < 0.005) {
+            ghost.velocity.x = Math.random() < 0.5 ? 1 : -1;
+            ghost.velocity.y = Math.random() < 0.5 ? 1 : -1;
+        }
+    }
 
     function detectCollisionsWithBoundaries(entity) {
         for (const boundary of boundaries) {
@@ -166,6 +178,32 @@ function functionality(){
             ) {
                 entity.velocity.x = 0;
                 entity.velocity.y = 0;
+            }
+        }
+    }
+
+    function detectGhostCollisionsWithBoundaries(entity) {
+        for (const boundary of boundaries) {
+            if (
+                entity.position.y - entity.radius + entity.velocity.y <= boundary.position.y + boundary.height &&
+                entity.position.y + entity.radius + entity.velocity.y >= boundary.position.y &&
+                entity.position.x + entity.radius + entity.velocity.x >= boundary.position.x &&
+                entity.position.x - entity.radius + entity.velocity.x <= boundary.position.x + boundary.width
+            ) {
+                if (entity.velocity.y === 1) {
+                    entity.velocity.y = 0;
+                    entity.velocity.x = Math.random() < 0.5 ? -1 : 1;
+                } else if (entity.velocity.y === -1) {
+                    entity.velocity.y = 0;
+                    entity.velocity.x = Math.random() < 0.5 ? -1 : 1;
+                } else if (entity.velocity.x === -1) {
+                    entity.velocity.x = 0;
+                    entity.velocity.y = Math.random() < 0.5 ? -1 : 1;
+                } else if (entity.velocity.x === 1) {
+                    entity.velocity.x = 0;
+                    entity.velocity.y = Math.random() < 0.5 ? -1 : 1;
+                }
+                break;
             }
         }
     }
@@ -223,11 +261,20 @@ function functionality(){
         pellets.forEach(pellet => pellet.draw());
 
         detectCollisionsWithBoundaries(player);
-        detectCollisionsWithBoundaries(ghost);
+        detectGhostCollisionsWithBoundaries(ghost);
+        detectGhostCollisionsWithBoundaries(ghost2);
+        detectGhostCollisionsWithBoundaries(ghost3);
         detectCollisionsWithPellets(player);
 
         player.update();
         ghost.update();
+        ghost2.update();
+        ghost3.update();
+
+        randomizeGhostDirection(ghost);
+        randomizeGhostDirection(ghost2);
+        randomizeGhostDirection(ghost3);
+
 
         requestAnimationFrame(animate);
     }
