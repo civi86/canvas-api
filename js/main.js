@@ -31,7 +31,6 @@ function functionality(){
     const pellets = [];
 
     let score = 0;
-    let check = false;
 
     class Pellet {
         static width = 40;
@@ -156,7 +155,6 @@ function functionality(){
         ghost.velocity.y *= -1;
     }, 1000);
 
-    check = false;
 
     function detectCollisionsWithBoundaries(entity) {
         for (const boundary of boundaries) {
@@ -168,7 +166,6 @@ function functionality(){
             ) {
                 entity.velocity.x = 0;
                 entity.velocity.y = 0;
-                check = true;
             }
         }
     }
