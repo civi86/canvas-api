@@ -5,8 +5,8 @@ body {
 
 #score {
     display: block;
-    position: relative;
-    margin-left: 340px;
+    position: absolute;
+    margin-left: 450px;
     margin-top: 10%;
     color: red;
     font-size: 40px;
@@ -14,6 +14,7 @@ body {
 }
 
 #canvas {
-    margin-top: -20%;
-    margin-left: 10%;
+    position: absolute;
+    margin-top: -10%;
+    margin-left: 5%;
 }

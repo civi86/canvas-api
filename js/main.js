@@ -1,6 +1,6 @@
 const canvas = document.querySelector('canvas');
-canvas.width = 1080;
-canvas.height = 1080;
+canvas.width = 1140;
+canvas.height = 980;
 const c = canvas.getContext('2d');
 let scoreText = document.getElementById('score');
 
@@ -87,7 +87,7 @@ function functionality(){
         constructor({position, velocity}) {
             this.position = position;
             this.velocity = velocity;
-            this.radius = 19.99;
+            this.radius = 8;
             this.radians = 0.75;
             this.openRate = 0.02;
             this.orientation = 0;
@@ -137,7 +137,7 @@ function functionality(){
         constructor({position, velocity}) {
             this.position = position;
             this.velocity = velocity;
-            this.radius = 19.99;
+            this.radius = 19.999;
             this.cooldown = 1;
             this.image = new Image();
             this.image.src = './img/ghost_red.png';
@@ -167,16 +167,16 @@ function functionality(){
             if (symbol === '-') {
                 boundaries.push(new Boundary({
                     position: {
-                        x: Boundary.width * j + 400,
-                        y: Boundary.height * index + 400
+                        x: Boundary.width * j + 420,
+                        y: Boundary.height * index + 420
                     }
                 }));
             }
             if (symbol === ' ') {
                 pellets.push(new Pellet({
                     position: {
-                        x: Pellet.width * j + 400,
-                        y: Pellet.height * index + 400
+                        x: Pellet.width * j + 420,
+                        y: Pellet.height * index + 420
                     }
                 }));
             }
@@ -184,25 +184,25 @@ function functionality(){
     });
 
     const player = new Player({
-        position: { x:500, y:460 },
+        position: { x:480, y:480 },
         velocity: { x:0, y:0 }
     });
 
     const ghost = new Ghost({
-        position: { x:620, y:600 },
+        position: { x:640, y:620 },
         velocity: { x:0, y:1 }
     });
 
     const ghost2 = new Ghost({
-        position: { x:820, y:800 },
+        position: { x:840, y:840 },
         velocity: { x:0, y:1 }
     });
     const ghost3 = new Ghost({
-        position: { x:940, y:620 },
+        position: { x:1040, y:620 },
         velocity: { x:1, y:0 }
     });
     const ghost4 = new Ghost({
-        position: { x:460, y:680 },
+        position: { x:480, y:680 },
         velocity: { x:0, y:1 }
     });
 
@@ -297,47 +297,89 @@ function functionality(){
             }
         }
     }
+
+    function checkPlayerCollision() {
+        return player.position.x % 40 === 0 && player.position.y % 40 === 0;
+    }
+
+    let w = false;
+    let a = false;
+    let s = false;
+    let d = false;
     
     addEventListener('keydown', ({key}) => {
-        switch (key) {
-            case 'w': 
-                player.velocity.y = -1; 
-                player.velocity.x = 0; 
-                player.orientation = 2; 
-                previousDirection.push('w');
-                break;
-    
-            case 'a': 
-                player.velocity.x = -1; 
-                player.velocity.y = 0; 
-                player.orientation = 1;
-                previousDirection.push('a');
-                break;
-                
-            case 's': 
-                player.velocity.y = 1; 
-                player.velocity.x = 0; 
-                player.orientation = 3;
-                previousDirection.push('s');
+       switch (key) {
+            case 'w':
+                w = true;
                 break;
 
-            case 'd': 
-                player.velocity.x = 1; 
-                player.velocity.y = 0; 
-                player.orientation = 0;
-                previousDirection.push('d');
+            case 'a':
+                a = true;
                 break;
+    
+            case 's':
+                s = true;
+                break;
+    
+            case 'd':
+                d = true;
+                break;
+            }
         }
-    });
+    );
+
+    addEventListener('keyup', ({key}) => {
+        switch (key) {
+             case 'w':
+                 w = false;
+                 break;
+ 
+             case 'a':
+                 a = false;
+                 break;
+     
+             case 's':
+                 s = false;
+                 break;
+     
+             case 'd':
+                 d = false;
+                 break;
+             }
+         }
+     );
 
     setInterval(() => pecIndex++, 100);
 
     function animate() {
         c.clearRect(0, 0, canvas.width, canvas.height);
 
+        if (w) {
+            player.velocity.y = -1;
+            player.velocity.x = 0;
+            player.orientation = 2;
+        } 
+        else if (a) {
+            player.velocity.x = -1;
+            player.velocity.y = 0;
+            player.orientation = 1;
+        }
+        else if (s) {
+            player.velocity.y = 1;
+            player.velocity.x = 0;
+            player.orientation = 3;
+        }
+        else if (d) {
+            player.velocity.x = 1;
+            player.velocity.y = 0;
+            player.orientation = 0;
+        } else {
+            player.velocity.x = 0;
+            player.velocity.y = 0;
+        }
+        
         boundaries.forEach(boundary => boundary.draw());
         pellets.forEach(pellet => pellet.draw());
-
         detectCollisionsWithBoundaries(player);
         detectGhostCollisionsWithBoundaries(ghost);
         detectGhostCollisionsWithBoundaries(ghost2);
@@ -345,7 +387,7 @@ function functionality(){
         detectGhostCollisionsWithBoundaries(ghost4);
         detectCollisionsWithPellets(player);
         playerCollisionWithGhost();
-
+        checkPlayerCollision()
         player.update();
         ghost.update();
         ghost2.update();
