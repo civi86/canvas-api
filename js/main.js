@@ -29,6 +29,9 @@ function functionality(){
 
     const boundaries = [];
     const pellets = [];
+    const previousDirection = [];
+
+    let pecIndex = 0;
 
     let score = 0;
 
@@ -39,11 +42,20 @@ function functionality(){
             this.position = position;
             this.width = 40;
             this.height = 40;
+            this.image = new Image();
+            this.image.src = './img/coins.png';
+            this.imageWidth = 20;
+            this.imageHeight = 20;
         }
 
         draw() {
-            c.fillStyle = 'purple';
-            c.fillRect(this.position.x, this.position.y, this.width, this.height);
+            c.drawImage(
+                this.image,
+                this.position.x + (this.width - this.imageWidth) / 2,
+                this.position.y + (this.height - this.imageHeight) / 2,
+                this.imageWidth,
+                this.imageHeight
+            );
         }
     }
 
@@ -54,11 +66,20 @@ function functionality(){
             this.position = position;
             this.width = 40;
             this.height = 40;
+            this.image = new Image();
+            this.image.src = './img/wall_L_down_left.png';
+            this.imageWidth = 40;
+            this.imageHeight = 40;
         }
 
         draw() {
-            c.fillStyle = 'blue';
-            c.fillRect(this.position.x, this.position.y, this.width, this.height);
+            c.drawImage(
+                this.image,
+                this.position.x + (this.width - this.imageWidth) / 2,
+                this.position.y + (this.height - this.imageHeight) / 2,
+                this.imageWidth,
+                this.imageHeight
+            );
         }
     }
 
@@ -66,35 +87,49 @@ function functionality(){
         constructor({position, velocity}) {
             this.position = position;
             this.velocity = velocity;
-            this.radius = 15;
+            this.radius = 19.99;
             this.radians = 0.75;
             this.openRate = 0.02;
             this.orientation = 0;
+            this.image = new Image();
+            this.image.src = './img/pecboy_0.png';
+            this.imageWidth = 40;
+            this.imageHeight = 40;
         }
 
         draw() {
-            let startAngle, endAngle;
+            c.save();
+            c.translate(this.position.x, this.position.y);
+    
             switch (this.orientation) {
-                case 0: startAngle = this.radians; endAngle = Math.PI * 2 - this.radians; break;
-                case 1: startAngle = Math.PI + this.radians; endAngle = Math.PI - this.radians; break;
-                case 2: startAngle = Math.PI * 1.5 + this.radians; endAngle = Math.PI * 1.5 - this.radians; break;
-                case 3: startAngle = Math.PI * 0.5 + this.radians; endAngle = Math.PI * 0.5 - this.radians; break;
+                case 0: break;
+                case 1: c.rotate(Math.PI); 
+                break;
+                case 2: c.rotate(-Math.PI / 2);
+                break;
+                case 3: c.rotate(Math.PI / 2); 
+                break;
             }
-            c.beginPath();
-            c.arc(this.position.x, this.position.y, this.radius, startAngle, endAngle);
-            c.lineTo(this.position.x, this.position.y);
-            c.fillStyle = 'yellow';
-            c.fill();
-            c.closePath();
+    
+            c.drawImage(
+                this.image,
+                -this.imageWidth / 2,
+                -this.imageHeight / 2,
+                this.imageWidth,
+                this.imageHeight
+            );
+    
+            c.restore();
         }
-
+        
         update() {
             this.draw();
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y;
-
-            if (this.radians < 0 || this.radians > 0.75) this.openRate = -this.openRate;
-            this.radians += this.openRate;
+            if (pecIndex > 2) {
+                pecIndex = 0;
+            }
+            this.image.src = `./img/pecboy_${pecIndex}.png`
         }
     }
 
@@ -102,16 +137,22 @@ function functionality(){
         constructor({position, velocity}) {
             this.position = position;
             this.velocity = velocity;
-            this.radius = 19;
+            this.radius = 19.99;
             this.cooldown = 1;
+            this.image = new Image();
+            this.image.src = './img/ghost_red.png';
+            this.imageWidth = 40;
+            this.imageHeight = 40;
         }
 
         draw() {
-            c.beginPath();
-            c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
-            c.fillStyle = 'red';
-            c.fill();
-            c.closePath();
+            c.drawImage(
+                this.image,
+                this.position.x - this.imageWidth / 2,
+                this.position.y - this.imageHeight / 2,
+                this.imageWidth,
+                this.imageHeight
+            );
         }
 
         update() {
@@ -160,6 +201,10 @@ function functionality(){
         position: { x:940, y:620 },
         velocity: { x:1, y:0 }
     });
+    const ghost4 = new Ghost({
+        position: { x:460, y:680 },
+        velocity: { x:0, y:1 }
+    });
 
     function randomizeGhostDirection(ghost) {
         if (Math.random() < 0.005) {
@@ -180,6 +225,30 @@ function functionality(){
                 entity.velocity.y = 0;
             }
         }
+        return
+    }
+
+    function playerCollisionWithGhost() {
+        if (player.position.x === ghost.position.x) {
+            if (player.position.y === ghost.position.y) {
+                console.log("hävisit");
+            }
+        }
+        if (player.position.x === ghost2.position.x) {
+            if (player.position.y === ghost2.position.y) {
+                console.log("hävisit");
+            }
+        }
+        if (player.position.x === ghost3.position.x) {
+            if (player.position.y === ghost3.position.y) {
+                console.log("hävisit");
+            }
+        }
+        if (player.position.x === ghost4.position.x) {
+            if (player.position.y === ghost4.position.y) {
+                console.log("hävisit");
+            }
+        }
     }
 
     function detectGhostCollisionsWithBoundaries(entity) {
@@ -192,16 +261,21 @@ function functionality(){
             ) {
                 if (entity.velocity.y === 1) {
                     entity.velocity.y = 0;
-                    entity.velocity.x = Math.random() < 0.5 ? -1 : 1;
+                    entity.velocity.x = 0;
+                    setTimeout(function() { entity.velocity.x = Math.random() < 0.5 ? -1 : 1; }, 10);
                 } else if (entity.velocity.y === -1) {
                     entity.velocity.y = 0;
-                    entity.velocity.x = Math.random() < 0.5 ? -1 : 1;
+                    entity.velocity.x = 0;
+                    setTimeout(function() { entity.velocity.x = Math.random() < 0.5 ? -1 : 1; }, 10);
                 } else if (entity.velocity.x === -1) {
                     entity.velocity.x = 0;
-                    entity.velocity.y = Math.random() < 0.5 ? -1 : 1;
+                    entity.velocity.y = 0;
+                    setTimeout(function() { entity.velocity.y = Math.random() < 0.5 ? -1 : 1; }, 10);
                 } else if (entity.velocity.x === 1) {
                     entity.velocity.x = 0;
-                    entity.velocity.y = Math.random() < 0.5 ? -1 : 1;
+                    entity.velocity.y = 0;
+                    setTimeout(function() { entity.velocity.y = Math.random() < 0.5 ? -1 : 1; }, 10);
+
                 }
                 break;
             }
@@ -224,35 +298,39 @@ function functionality(){
         }
     }
     
-
-    // Event listener for player movement
     addEventListener('keydown', ({key}) => {
         switch (key) {
             case 'w': 
                 player.velocity.y = -1; 
                 player.velocity.x = 0; 
                 player.orientation = 2; 
+                previousDirection.push('w');
                 break;
     
             case 'a': 
                 player.velocity.x = -1; 
                 player.velocity.y = 0; 
                 player.orientation = 1;
+                previousDirection.push('a');
                 break;
                 
             case 's': 
                 player.velocity.y = 1; 
                 player.velocity.x = 0; 
-                player.orientation = 3; 
+                player.orientation = 3;
+                previousDirection.push('s');
                 break;
 
             case 'd': 
                 player.velocity.x = 1; 
                 player.velocity.y = 0; 
-                player.orientation = 0; 
+                player.orientation = 0;
+                previousDirection.push('d');
                 break;
         }
     });
+
+    setInterval(() => pecIndex++, 100);
 
     function animate() {
         c.clearRect(0, 0, canvas.width, canvas.height);
@@ -264,12 +342,15 @@ function functionality(){
         detectGhostCollisionsWithBoundaries(ghost);
         detectGhostCollisionsWithBoundaries(ghost2);
         detectGhostCollisionsWithBoundaries(ghost3);
+        detectGhostCollisionsWithBoundaries(ghost4);
         detectCollisionsWithPellets(player);
+        playerCollisionWithGhost();
 
         player.update();
         ghost.update();
         ghost2.update();
         ghost3.update();
+        ghost4.update();
 
         randomizeGhostDirection(ghost);
         randomizeGhostDirection(ghost2);
