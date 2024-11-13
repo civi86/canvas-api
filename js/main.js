@@ -369,7 +369,7 @@ window.addEventListener('load', () => {
 
     function startMusic() {
         music.play();
-        music.volume = 0.005;
+        music.volume = 0.002;
         music.loop = true;
     }
 
