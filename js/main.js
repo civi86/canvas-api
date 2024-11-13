@@ -29,11 +29,10 @@ function functionality(){
 
     const boundaries = [];
     const pellets = [];
-    const previousDirection = [];
-
-    let pecIndex = 0;
 
     let score = 0;
+
+    let pecIndex = 0;
 
     class Pellet {
         static width = 40;
@@ -190,11 +189,11 @@ function functionality(){
 
     const ghost = new Ghost({
         position: { x:640, y:620 },
-        velocity: { x:0, y:1 }
+        velocity: { x:1, y:0 }
     });
 
     const ghost2 = new Ghost({
-        position: { x:840, y:840 },
+       position: { x:840, y:840 },
         velocity: { x:0, y:1 }
     });
     const ghost3 = new Ghost({
@@ -207,7 +206,7 @@ function functionality(){
     });
 
     function randomizeGhostDirection(ghost) {
-        if (Math.random() < 0.005) {
+        if (Math.random() < 0.001) {
             ghost.velocity.x = Math.random() < 0.5 ? 1 : -1;
             ghost.velocity.y = Math.random() < 0.5 ? 1 : -1;
         }
@@ -227,26 +226,36 @@ function functionality(){
         }
         return
     }
+    
+    let newGame = false;
 
     function playerCollisionWithGhost() {
-        if (player.position.x === ghost.position.x) {
-            if (player.position.y === ghost.position.y) {
-                console.log("hävisit");
+        if (player.position.x - (player.position.x + ghost.position.x) / 2 < 10 && player.position.x - (player.position.x + ghost.position.x) / 2 > -20) {
+            if (player.position.y - (player.position.y + ghost.position.y) / 2 < 10 && player.position.y - (player.position.y + ghost.position.y) / 2 > -20) {
+                player.velocity.x = 0;
+                player.velocity.y = 0;
+                newGame = true;
             }
         }
-        if (player.position.x === ghost2.position.x) {
-            if (player.position.y === ghost2.position.y) {
-                console.log("hävisit");
+        if (player.position.x - (player.position.x + ghost2.position.x) / 2 < 10 && player.position.x - (player.position.x + ghost2.position.x) / 2 > -20) {
+            if (player.position.y - (player.position.y + ghost2.position.y) / 2 < 10 && player.position.y - (player.position.y + ghost2.position.y) / 2 > -20) {
+                player.velocity.x = 0;
+                player.velocity.y = 0;
+                newGame = true;
             }
         }
-        if (player.position.x === ghost3.position.x) {
-            if (player.position.y === ghost3.position.y) {
-                console.log("hävisit");
+        if (player.position.x - (player.position.x + ghost3.position.x) / 2 < 10 && player.position.x - (player.position.x + ghost3.position.x) / 2 > -20) {
+            if (player.position.y - (player.position.y + ghost3.position.y) / 2 < 10 && player.position.y - (player.position.y + ghost3.position.y) / 2 > -20) {
+                player.velocity.x = 0;
+                player.velocity.y = 0;
+                newGame = true;
             }
         }
-        if (player.position.x === ghost4.position.x) {
-            if (player.position.y === ghost4.position.y) {
-                console.log("hävisit");
+        if (player.position.x - (player.position.x + ghost4.position.x) / 2 < 10 && player.position.x - (player.position.x + ghost4.position.x) / 2 > -20) {
+            if (player.position.y - (player.position.y + ghost4.position.y) / 2 < 10 && player.position.y - (player.position.y + ghost4.position.y) / 2 > -20) {
+                player.velocity.x = 0;
+                player.velocity.y = 0;
+                newGame = true;
             }
         }
     }
@@ -298,8 +307,53 @@ function functionality(){
         }
     }
 
-    function checkPlayerCollision() {
-        return player.position.x % 40 === 0 && player.position.y % 40 === 0;
+    let animationID;
+
+    function resetGame() {
+
+        cancelAnimationFrame(animationID);
+    
+        score = 0;
+        scoreText.innerHTML = `Score: ${score}`;
+
+        pellets.length = 0;
+        boundaries.length = 0;
+
+        map.forEach((row, index) => {
+            row.forEach((symbol, j) => {
+                if (symbol === '-') {
+                    boundaries.push(new Boundary({
+                        position: {
+                            x: Boundary.width * j + 420,
+                            y: Boundary.height * index + 420
+                        }
+                    }));
+                }
+                if (symbol === ' ') {
+                    pellets.push(new Pellet({
+                        position: {
+                            x: Pellet.width * j + 420,
+                            y: Pellet.height * index + 420
+                        }
+                    }));
+                }
+            });
+        });
+    
+        player.position = { x: 480, y: 480 };
+        player.velocity = { x: 0, y: 0 };
+        ghost.position = { x: 640, y: 620 };
+        ghost.velocity = { x: 1, y: 0 };
+        ghost2.position = { x: 840, y: 840 };
+        ghost2.velocity = { x: 0, y: 1 };
+        ghost3.position = { x: 1040, y: 620 };
+        ghost3.velocity = { x: 1, y: 0 };
+        ghost4.position = { x: 480, y: 680 };
+        ghost4.velocity = { x: 0, y: 1 };
+    
+        newGame = false;
+    
+        animate();
     }
 
     let w = false;
@@ -387,7 +441,7 @@ function functionality(){
         detectGhostCollisionsWithBoundaries(ghost4);
         detectCollisionsWithPellets(player);
         playerCollisionWithGhost();
-        checkPlayerCollision()
+
         player.update();
         ghost.update();
         ghost2.update();
@@ -397,10 +451,14 @@ function functionality(){
         randomizeGhostDirection(ghost);
         randomizeGhostDirection(ghost2);
         randomizeGhostDirection(ghost3);
+        randomizeGhostDirection(ghost4);
 
 
-        requestAnimationFrame(animate);
+        animationID = requestAnimationFrame(animate);
+        
+        if (newGame) {
+            resetGame();
+        }
     }
-
     animate();
 }
