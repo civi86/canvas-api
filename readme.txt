@@ -9,8 +9,20 @@
     !!! Vaatii node.js !!!
 
 
-Tutorial apuja:
-https://www.youtube.com/watch?v=5IMXpp3rohQ
+    Työnjako:
 
-Assets:
-https://natomarcacini.itch.io/simple-pacman-unity?download
+        Benjamin Varonen:    Toiminnallisuus ja Entityt
+        Christian Karjola:   Kartta ja Collisionit
+
+    Projektiin käytetty aika: 
+
+        n. 30 tuntia, tarkempaan ei osaa eritellä paljonko meni mihinkin funktioon
+
+    Tutorial apuja oli täällä:
+        
+        https://www.youtube.com/watch?v=5IMXpp3rohQ
+
+
+    Assetit spriteihin ja ääniin:
+
+        https://natomarcacini.itch.io/simple-pacman-unity?download
