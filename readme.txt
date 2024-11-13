@@ -1,9 +1,9 @@
 
     Canvas-API Projekti PACMAN tyylinen peli
 
-    Tekijät: Benjamin Varonen & -----------
+    Tekijät: Benjamin Varonen & Christian Karjola
 
-
+    2024
 
 
 
