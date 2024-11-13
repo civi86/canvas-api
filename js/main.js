@@ -1,18 +1,18 @@
-const canvas = document.querySelector('canvas');
-canvas.width = 1140;
-canvas.height = 980;
-const c = canvas.getContext('2d');
-let scoreText = document.getElementById('score');
-
 window.addEventListener('load', () => {
-    functionality();
-});
 
-function functionality(){
+    const canvas = document.querySelector('canvas');
+    canvas.width = 1140;
+    canvas.height = 980;
+    const c = canvas.getContext('2d');
+    const music = document.getElementById('music');
+    const wakawaka = document.getElementById('wakawaka');
+    const coin = document.getElementById('coin');
+
+    let scoreText = document.getElementById('score');
 
     const map = [
         ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-        ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+        ['-', 'a', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
         ['-', ' ', '-', '-', '-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', ' ', '-'],
         ['-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', '-'],
         ['-', ' ', ' ', ' ', '-', ' ', '-', '-', '-', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
@@ -300,6 +300,8 @@ function functionality(){
                 entity.position.x + entity.radius + entity.velocity.x >= pellet.position.x &&
                 entity.position.x - entity.radius + entity.velocity.x <= pellet.position.x + pellet.width
             ) {
+                coin.play();
+                coin.volume = 0.1;
                 pellets.splice(i, 1);
                 score++;
                 scoreText.innerHTML = `Score: ${score}`;
@@ -360,23 +362,46 @@ function functionality(){
     let a = false;
     let s = false;
     let d = false;
+
+    function startMusic() {
+        music.play();
+        music.volume = 0.008;
+        music.loop = true;
+    }
+
+    function playWakawaka() {
+        if (!wakawaka.paused) 
+            return;
+
+        wakawaka.play();
+        wakawaka.volume = 0.05;
+        wakawaka.loop = true;
+    }
     
     addEventListener('keydown', ({key}) => {
        switch (key) {
             case 'w':
                 w = true;
+                playWakawaka();
+                startMusic();
                 break;
 
             case 'a':
                 a = true;
+                playWakawaka();
+                startMusic();
                 break;
     
             case 's':
                 s = true;
+                playWakawaka();
+                startMusic();
                 break;
     
             case 'd':
                 d = true;
+                playWakawaka();
+                startMusic();
                 break;
             }
         }
@@ -459,6 +484,9 @@ function functionality(){
         if (newGame) {
             resetGame();
         }
+        if (score === 113) {
+            resetGame();
+        }
     }
     animate();
-}
+});
