@@ -235,6 +235,7 @@ window.addEventListener('load', () => {
                 player.velocity.x = 0;
                 player.velocity.y = 0;
                 newGame = true;
+                wakawaka.pause();
             }
         }
         if (player.position.x - (player.position.x + ghost2.position.x) / 2 < 10 && player.position.x - (player.position.x + ghost2.position.x) / 2 > -20) {
@@ -242,6 +243,7 @@ window.addEventListener('load', () => {
                 player.velocity.x = 0;
                 player.velocity.y = 0;
                 newGame = true;
+                wakawaka.pause();
             }
         }
         if (player.position.x - (player.position.x + ghost3.position.x) / 2 < 10 && player.position.x - (player.position.x + ghost3.position.x) / 2 > -20) {
@@ -249,6 +251,7 @@ window.addEventListener('load', () => {
                 player.velocity.x = 0;
                 player.velocity.y = 0;
                 newGame = true;
+                wakawaka.pause();
             }
         }
         if (player.position.x - (player.position.x + ghost4.position.x) / 2 < 10 && player.position.x - (player.position.x + ghost4.position.x) / 2 > -20) {
@@ -256,6 +259,7 @@ window.addEventListener('load', () => {
                 player.velocity.x = 0;
                 player.velocity.y = 0;
                 newGame = true;
+                wakawaka.pause();
             }
         }
     }
