@@ -365,7 +365,7 @@ window.addEventListener('load', () => {
 
     function startMusic() {
         music.play();
-        music.volume = 0.008;
+        music.volume = 0.005;
         music.loop = true;
     }
 
@@ -374,7 +374,7 @@ window.addEventListener('load', () => {
             return;
 
         wakawaka.play();
-        wakawaka.volume = 0.05;
+        wakawaka.volume = 0.02;
         wakawaka.loop = true;
     }
     
