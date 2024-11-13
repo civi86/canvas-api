@@ -16,7 +16,7 @@
 
     Projektiin käytetty aika: 
 
-        n. 30 tuntia, tarkempaan ei osaa eritellä paljonko meni mihinkin funktioon
+        n. 30 tuntia per tekijä, tarkempaan ei osaa eritellä paljonko meni mihinkin funktioon
 
     Tutorial apuja oli täällä:
         
