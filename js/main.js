@@ -378,7 +378,7 @@ window.addEventListener('load', () => {
             return;
 
         wakawaka.play();
-        wakawaka.volume = 0.01;
+        wakawaka.volume = 0.005;
         wakawaka.loop = true;
     }
     
