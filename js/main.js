@@ -4,7 +4,6 @@ window.addEventListener('load', () => {
     canvas.width = 1140;
     canvas.height = 980;
     const c = canvas.getContext('2d');
-    const music = document.getElementById('music');
     const wakawaka = document.getElementById('wakawaka');
     const coin = document.getElementById('coin');
 
@@ -367,12 +366,6 @@ window.addEventListener('load', () => {
     let s = false;
     let d = false;
 
-    function startMusic() {
-        music.play();
-        music.volume = 0;
-        music.loop = true;
-    }
-
     function playWakawaka() {
         if (!wakawaka.paused) 
             return;
@@ -387,25 +380,21 @@ window.addEventListener('load', () => {
             case 'w':
                 w = true;
                 playWakawaka();
-                startMusic();
                 break;
 
             case 'a':
                 a = true;
                 playWakawaka();
-                startMusic();
                 break;
     
             case 's':
                 s = true;
                 playWakawaka();
-                startMusic();
                 break;
     
             case 'd':
                 d = true;
                 playWakawaka();
-                startMusic();
                 break;
             }
         }
